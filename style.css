@@ -1,0 +1,40 @@
+html, body {
+  	background: #000;
+	font-size: 96%;
+  	font-family: Verdana, Helvetica, sans-serif;
+  	line-height: 1.4em;
+  	color: #fff;
+	height: 100%;
+	width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.full-page {
+	width: 100vw;
+	height: 100vh;
+	margin: 0 auto;
+}
+
+.top-zone {
+	background: rgba(200,200,255,0.1);
+	text-align: center;
+	height: 5%;
+	min-height: 32px;
+}
+
+
+.animated-zone {
+	background: rgba(255,255,255,0);
+	text-align: center;
+	height: 90%;
+	margin: 0 auto;
+}
+
+.footer-zone {
+	background: rgba(200,200,255,0.1);
+	text-align: center;
+	height: 5%;
+	min-height: 32px;
+}

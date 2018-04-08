@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
+<head>
+	<title>wswjs.ml
+	</title>
+	<link rel="icon" type="image/png" href="/img/icon.png">
+    <script src="/js/front.js"></script>
+	<link type="text/css" rel="stylesheet" charset="UTF-8" href="style.css">
+</head>
+<body>
+	
+<div class="full-page">
+	<div class="top-zone">
+		Welcome to my page.
+	</div>
+	<div class="animated-zone">
+		<img id="orbiter" src="img/whirl.png" style="position: relative" />
+	</div>
+	<div class="footer-zone">
+		Copyright 2018, wildsw
+	</div>
+</div>
+	
+<script>
+  var cat = document.querySelector("#orbiter");
+  var angle = 0, lastTime = null;
+  function animate(time) {
+    if (lastTime != null)
+      angle += (time - lastTime) * 0.001;
+    lastTime = time;
+    cat.style.top = 300+(Math.sin(angle) * 100) + "px";
+    cat.style.left = (Math.cos(angle) * 200) + "px";
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+</script>
+
+</body>
+</html>
