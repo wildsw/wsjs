@@ -11,29 +11,18 @@
 	
 <div class="full-page">
 	<div class="top-zone">
-		Welcome to my page.
+		<h2>Welcome to frontpage!</h2>
 	</div>
+	
 	<div class="animated-zone">
+		<div id="main-sq">
 		<img id="orbiter" src="img/whirl.png" style="position: relative" />
+		</div>
 	</div>
+	
 	<div class="footer-zone">
 		Copyright 2018, wildsw
 	</div>
 </div>
-	
-<script>
-  var cat = document.querySelector("#orbiter");
-  var angle = 0, lastTime = null;
-  function animate(time) {
-    if (lastTime != null)
-      angle += (time - lastTime) * 0.001;
-    lastTime = time;
-    cat.style.top = 300+(Math.sin(angle) * 100) + "px";
-    cat.style.left = (Math.cos(angle) * 200) + "px";
-    requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
-</script>
-
 </body>
 </html>
