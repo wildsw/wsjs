@@ -4,52 +4,16 @@ html, body {
   	font-family: Verdana, Helvetica, sans-serif;
   	line-height: 1.4em;
   	color: #fff;
+	width: 100%;
 	height: 100%;
-	width: 100%;
-    	margin: 0;
-    	padding: 0;
-    	overflow: hidden;
-}
-
-.full-page {
-	width: 100vw;
-	height: 100vh;
-	margin: 0 auto;
-}
-
-.top-zone {
-	background: rgba(200,200,255,0.1);
-	text-align: center;
-	width: 100%;
-	height: 5%;
-	min-height: 32px;
-}
-
-
-.animated-zone {
-	background: rgba(255,255,255,0);
-	text-align: center;
-	width: 100%;
-	height: 90%;
-	margin: 0 auto;
+	margin: 0px;
+	border: 0;
+	overflow: hidden; /*  Disable scrolls */
+	display: block;  /* No floating content */
 }
 
 canvas {
 	position: absolute;
 	top: 0;
 	left: 0;
-}
-
-#main-sq {
-	margin: 0;
-	padding: 0;
-	background: #000;
-}
-
-.footer-zone {
-	background: rgba(200,200,255,0.1);
-	text-align: center;
-	width: 100%;
-	height: 5%;
-	min-height: 32px;
 }
