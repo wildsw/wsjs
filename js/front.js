@@ -3,13 +3,11 @@ var w = c.width = window.innerWidth,
 		ctx = c.getContext( '2d' ),
 		
 		particles = [],
-		minSquareDist = w * 10,
-		springConst = .0001,
+		minSquareDist = w * 16,
+		springConst = .0000032,
 		tick = 0;
-
-for( var i = 0; i < 256; ++i )
+for( var i = 0; i < 128; ++i )
 	particles.push( new Particle );
-
 function Particle(){
 	
 	this.x = Math.random() * w;
@@ -17,8 +15,8 @@ function Particle(){
 	
 	var rad = Math.random() * Math.PI * 2;
 	
-	this.vx = Math.random() * 1;
-	this.vy = Math.random() * 1;
+	this.vx = Math.cos( rad ) * 0.001;
+	this.vy = Math.sin( rad ) * 0.01;
 	
 	this.waveSize = rad;
 }
@@ -47,16 +45,17 @@ Particle.prototype.update = function(){
 	
 	if( changeY )
 		this.vy *= -1;
-
+	
+	this.waveSize += .1 + Math.random() * .001;
 }
 Particle.prototype.render = function(){
 	
-	ctx.fillStyle = '#fff'
+	ctx.fillStyle = '#666'
+	
 	ctx.beginPath();
-	ctx.arc( this.x, this.y, 1, 0, 2 * Math.PI );
+	ctx.arc( this.x, this.y, 4, 0, Math.PI * 2 );
 	ctx.fill();
 }
-
 function anim(){
 	
 	window.requestAnimationFrame( anim );
@@ -65,7 +64,8 @@ function anim(){
 	
 	ctx.fillStyle = 'rgba(0,0,0,1)';
 	ctx.fillRect( 0, 0, w, h );
-	ctx.strokeStyle = '#fff';
+	
+	ctx.strokeStyle = 'rgba(128,128,128,0.1)';
 	
 	particles.map( function( particle ){ particle.update(); } );
 	
@@ -87,17 +87,24 @@ function anim(){
 				p2.vx += dx * springConst;
 				p2.vy += dy * springConst;
 				
+				ctx.lineWidth = ( 2 - dSquare / minSquareDist ) * 2;
+				
+				ctx.beginPath();
+				ctx.moveTo( p1.x, p1.y );
+				ctx.lineTo( p2.x, p2.y );
+				ctx.stroke();
 			}
 		}
+		
 		p1.render();
 	}
 }
 anim();
-
 window.addEventListener( 'resize', function(){
 	
 	w = c.width = window.innerWidth;
 	h = c.height = window.innerHeight;
 	
-	minSquareDist = w * 10;
+	minSquareDist = w * 16;
 })
+	
