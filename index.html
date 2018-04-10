@@ -17,7 +17,7 @@
 		springConst = .0000032,
 		tick = 0;
 
-for( var i = 0; i < 32; ++i )
+for( var i = 0; i < 128; ++i )
 	particles.push( new Particle );
 
 function Particle(){
@@ -65,7 +65,7 @@ Particle.prototype.render = function(){
 	ctx.fillStyle = '#666'
 	
 	ctx.beginPath();
-	ctx.arc( this.x, this.y, 2, 0, Math.PI * 2 );
+	ctx.arc( this.x, this.y, 4, 0, Math.PI * 2 );
 	ctx.fill();
 }
 
@@ -100,7 +100,7 @@ function anim(){
 				p2.vx += dx * springConst;
 				p2.vy += dy * springConst;
 				
-				ctx.lineWidth = ( 0 - dSquare / minSquareDist ) * 2;
+				ctx.lineWidth = ( 2 - dSquare / minSquareDist ) * 2;
 				
 				ctx.beginPath();
 				ctx.moveTo( p1.x, p1.y );
