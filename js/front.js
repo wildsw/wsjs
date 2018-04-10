@@ -6,7 +6,7 @@ var w = c.width = window.innerWidth,
 		minSquareDist = w * 16,
 		springConst = .0000032,
 		tick = 0;
-for( var i = 0; i < 128; ++i )
+for( var i = 0; i < 256; ++i )
 	particles.push( new Particle );
 function Particle(){
 	
@@ -15,8 +15,8 @@ function Particle(){
 	
 	var rad = Math.random() * Math.PI * 2;
 	
-	this.vx = Math.cos( rad ) * 0.001;
-	this.vy = Math.sin( rad ) * 0.001;
+	this.vx = Math.cos( rad ) * 0.1;
+	this.vy = Math.sin( rad ) * 0.1;
 	
 	this.waveSize = rad;
 }
@@ -26,20 +26,20 @@ Particle.prototype.update = function(){
 	this.y += this.vy;
 	
 	var changeX = true,
-			changeY = true;
+	changeY = true;
 	
-	if( this.x < -2028 )
+	if( this.x < 0 )
 		this.x = w;
-	else if( this.x > (w+2048) )
+	else if( this.x > w )
 		this.x = 0;
 	else changeX = false;
 	
 	if( changeX )
 		this.vx *= 0.95;
 	
-	if( this.y < -2048 )
+	if( this.y < 0 )
 		this.y = h;
-	else if( this.y > (h+2048) )
+	else if( this.y > h )
 		this.y = 0;
 	else changeY = false;
 	
@@ -48,9 +48,9 @@ Particle.prototype.update = function(){
 }
 
 Particle.prototype.render = function(){
-	ctx.fillStyle = '#666'
+	ctx.fillStyle = '#fff'
 	ctx.beginPath();
-	ctx.arc( this.x, this.y, 4, 0, Math.PI * 2 );
+	ctx.arc( this.x, this.y, 4 * this.waveSize, 0, Math.PI * 2 );
 	ctx.fill();
 }
 function anim(){
