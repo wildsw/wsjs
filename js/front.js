@@ -16,7 +16,7 @@ function Particle(){
 	var rad = Math.random() * Math.PI * 2;
 	
 	this.vx = Math.cos( rad ) * 0.001;
-	this.vy = Math.sin( rad ) * 0.01;
+	this.vy = Math.sin( rad ) * 0.001;
 	
 	this.waveSize = rad;
 }
@@ -28,30 +28,27 @@ Particle.prototype.update = function(){
 	var changeX = true,
 			changeY = true;
 	
-	if( this.x < 0 )
-		this.x = 0;
-	else if( this.x > w )
+	if( this.x < -2028 )
 		this.x = w;
+	else if( this.x > (w+2048) )
+		this.x = 0;
 	else changeX = false;
 	
 	if( changeX )
-		this.vx *= -1;
+		this.vx *= 0.95;
 	
-	if( this.y < 0 )
-		this.y = 0;
-	else if( this.y > h )
+	if( this.y < -2048 )
 		this.y = h;
+	else if( this.y > (h+2048) )
+		this.y = 0;
 	else changeY = false;
 	
 	if( changeY )
-		this.vy *= -1;
-	
-	this.waveSize += .1 + Math.random() * .001;
+		this.vy *= 0.95;
 }
+
 Particle.prototype.render = function(){
-	
 	ctx.fillStyle = '#666'
-	
 	ctx.beginPath();
 	ctx.arc( this.x, this.y, 4, 0, Math.PI * 2 );
 	ctx.fill();
@@ -64,7 +61,6 @@ function anim(){
 	
 	ctx.fillStyle = 'rgba(0,0,0,1)';
 	ctx.fillRect( 0, 0, w, h );
-	
 	ctx.strokeStyle = 'rgba(128,128,128,0.1)';
 	
 	particles.map( function( particle ){ particle.update(); } );
