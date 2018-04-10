@@ -13,7 +13,7 @@
 		ctx = c.getContext( '2d' ),
 		
 		particles = [],
-		minSquareDist = w * 64,
+		minSquareDist = w * 16,
 		springConst = .0000032,
 		tick = 0;
 
@@ -119,7 +119,7 @@ window.addEventListener( 'resize', function(){
 	w = c.width = window.innerWidth;
 	h = c.height = window.innerHeight;
 	
-	minSquareDist = w * 64;
+	minSquareDist = w * 16;
 })
 	</script>
 </body>
