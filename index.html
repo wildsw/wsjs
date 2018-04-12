@@ -100,12 +100,6 @@ function anim(){
 				p2.vx += dx * springConst;
 				p2.vy += dy * springConst;
 				
-				ctx.lineWidth = ( 2 - dSquare / minSquareDist ) * 2;
-				
-				ctx.beginPath();
-				ctx.moveTo( p1.x, p1.y );
-				ctx.lineTo( p2.x, p2.y );
-				ctx.stroke();
 			}
 		}
 		
