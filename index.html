@@ -13,11 +13,11 @@
 		ctx = c.getContext( '2d' ),
 		
 		particles = [],
-		minSquareDist = w * 16,
-		springConst = .0000032,
+		minSquareDist = w * 32,
+		springConst = .000032,
 		tick = 0;
 
-for( var i = 0; i < 128; ++i )
+for( var i = 0; i < 256; ++i )
 	particles.push( new Particle );
 
 function Particle(){
@@ -27,8 +27,8 @@ function Particle(){
 	
 	var rad = Math.random() * Math.PI * 2;
 	
-	this.vx = Math.cos( rad ) * 0.001;
-	this.vy = Math.sin( rad ) * 0.01;
+	this.vx = Math.cos( rad ) * 0.1;
+	this.vy = Math.sin( rad ) * 0.1;
 	
 	this.waveSize = rad;
 }
