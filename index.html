@@ -13,11 +13,11 @@
 		ctx = c.getContext( '2d' ),
 		
 		particles = [],
-		minSquareDist = w * 32,
-		springConst = .000002,
+		minSquareDist = w * 4,
+		springConst = .00002,
 		tick = 0;
 
-for( var i = 0; i < 256; ++i )
+for( var i = 0; i < 2048; ++i )
 	particles.push( new Particle );
 
 function Particle(){
