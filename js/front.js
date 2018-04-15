@@ -1,106 +1,177 @@
-var w = c.width = window.innerWidth,
-		h = c.height = window.innerHeight,
-		ctx = c.getContext( '2d' ),
-		
-		particles = [],
-		minSquareDist = w * 16,
-		springConst = .0000032,
-		tick = 0;
-for( var i = 0; i < 256; ++i )
-	particles.push( new Particle );
-function Particle(){
-	
-	this.x = Math.random() * w;
-	this.y = Math.random() * h;
-	
-	var rad = Math.random() * Math.PI * 2;
-	
-	this.vx = Math.cos( rad ) * 0.1;
-	this.vy = Math.sin( rad ) * 0.1;
-	
-	this.waveSize = rad;
-}
-Particle.prototype.update = function(){
-	
-	this.x += this.vx;
-	this.y += this.vy;
-	
-	var changeX = true,
-	changeY = true;
-	
-	if( this.x < 0 )
-		this.x = w;
-	else if( this.x > w )
-		this.x = 0;
-	else changeX = false;
-	
-	if( changeX )
-		this.vx *= 0.95;
-	
-	if( this.y < 0 )
-		this.y = h;
-	else if( this.y > h )
-		this.y = 0;
-	else changeY = false;
-	
-	if( changeY )
-		this.vy *= 0.95;
+var canvas, context;
+
+document.addEventListener("DOMContentLoaded", main, true);
+document.addEventListener("mouseup", onmouseup, true);
+
+function onmouseup(/*MouseEvent*/ e){
+    var aStar = new Star();
+    aStar.x = e.clientX;
+    aStar.y = e.clientY;
+    aStar.vx = 16;
+    star.push(aStar);
+    document.title = star.length;
 }
 
-Particle.prototype.render = function(){
-	ctx.fillStyle = '#fff'
-	ctx.beginPath();
-	ctx.arc( this.x, this.y, 4 * this.waveSize, 0, Math.PI * 2 );
-	ctx.fill();
+var star = new Array(); // в этом массиве будут храниться все объекты
+var count = 32; // количество астероидов
+var HEIGHT = window.innerHeight, WIDTH = window.innerWidth;
+var timer;
+
+var sunMass = 131072;
+var maxVz = 1;
+
+var G = 0.066; // GRAVITY
+var dt = 0.03; // stepTime
+
+function main(){
+    // CREATE Canvas
+	canvas = document.createElement('canvas');
+	canvas.height = HEIGHT;
+	canvas.width = WIDTH;
+	canvas.id = 'canvas';
+	canvas.style.position = 'absolute';
+	canvas.style.top = '0';
+	canvas.style.left = '0';
+	document.body.appendChild(canvas);
+    context = canvas.getContext("2d");
+   // CREATE Asters 
+    var aStar;
+    for(var i = 0; i < count; i++){
+        aStar = new Star();
+        aStar.x = Math.random() * WIDTH;
+        aStar.y = Math.random() * HEIGHT;
+        star.push(aStar);
+    }
+    // TIMER
+    timer = setInterval(Step, dt * 1000);
 }
-function anim(){
-	
-	window.requestAnimationFrame( anim );
-	
-	++tick;
-	
-	ctx.fillStyle = 'rgba(0,0,0,1)';
-	ctx.fillRect( 0, 0, w, h );
-	ctx.strokeStyle = 'rgba(128,128,128,0.1)';
-	
-	particles.map( function( particle ){ particle.update(); } );
-	
-	for( var i = 0; i < particles.length; ++i ){
-		
-		var p1 = particles[ i ];
-		
-		for( var j = i + 1; j < particles.length; ++j ){
-			
-			var p2 = particles[ j ],
-					dx = p1.x - p2.x,
-					dy = p1.y - p2.y,
-					dSquare = dx*dx + dy*dy;
-			
-			if( dSquare < minSquareDist ){
-				
-				p1.vx -= dx * springConst;
-				p1.vy -= dy * springConst;
-				p2.vx += dx * springConst;
-				p2.vy += dy * springConst;
-				
-				ctx.lineWidth = ( 2 - dSquare / minSquareDist ) * 2;
-				
-				ctx.beginPath();
-				ctx.moveTo( p1.x, p1.y );
-				ctx.lineTo( p2.x, p2.y );
-				ctx.stroke();
-			}
-		}
-		
-		p1.render();
-	}
+
+function Star(){
+    this.x = 0;
+    this.y = 0;
+    this.vx = 0;
+    this.vy = 0;
+    this.m = Math.random() * 256;
+    this.r = this.m / 96; // Radius
+    if (this.r < 0.5) {this.r = 0.5};
 }
-anim();
+
+function Step(){
+    var a, ax, ay, dx, dy, r;
+    // вычисление каждый с каждым
+    for(var i = 0; i < star.length; i++) // считаем текущей
+        for(var j = 0; j < star.length; j++) // считаем второй
+        {
+            if(i == j) continue;
+            dx = star[j].x - star[i].x;
+            dy = star[j].y - star[i].y;
+            
+            r = dx * dx + dy * dy;// R^2
+            if(r < 0.01) r = 0.01; // donotnul
+            if(r > maxVz) continue;
+          
+            a = G * star[j].m / r;
+            
+            r = Math.sqrt(r); // тут R
+            ax = a * dx / r; // a * cos
+            ay = a * dy / r; // a * sin
+            
+            star[i].vx += ax * dt;
+            star[i].vy += ay * dt;
+        }
+
+  // меняем координаты, делаем проверки
+    for(var i = 0; i < star.length; i++){
+        
+  // Включаем Солнце
+      var as, axs, ays, dxs, dys, rs;
+      dxs = WIDTH/2 - star[i].x;
+      dys = HEIGHT/2 - star[i].y;
+      rs = dxs * dxs + dys * dys;
+      if(rs < 1) rs = 1;
+      as = G * sunMass / rs;
+      rs = Math.sqrt(rs); // тут R
+      axs = as * dxs / rs; // a * cos
+      ays = as * dys / rs; // a * sin
+      star[i].vx += axs * dt;
+      star[i].vy += ays * dt;
+      
+      
+      star[i].x += star[i].vx * dt;
+      star[i].y += star[i].vy * dt;
+        //Проверки края холста
+        var changeX = true, changeY = true;
+	
+	      if( star[i].x < 0 )
+          star[i].x = WIDTH;
+	      else if( star[i].x > WIDTH ) 
+          star[i].x = 0;
+        else changeX = false;
+	
+        if( changeX ){
+		      star[i].x = WIDTH/2 + Math.random() * 8;
+          star[i].y = HEIGHT/2 + 64 + Math.random() * 8;
+          star[i].vx = 15 + Math.random() * 2;
+          star[i].vy = 0;
+        };
+      
+	      if( star[i].y < 0 )
+		      star[i].y = HEIGHT;
+	      else if( star[i].y > HEIGHT )
+		      star[i].y = 0;
+	      else changeY = false;
+	
+	      if( changeY ){
+		      star[i].x = WIDTH/2 + Math.random() * 16;
+          star[i].y = HEIGHT/2 + 128 + Math.random() * 16;
+          star[i].vx = 6 + Math.random() * 2;
+          star[i].vy = 0;
+        };
+    }
+    
+    // выводим на экран
+    Draw();
+}
+
+function Draw(){
+    // очищение экрана
+    context.fillStyle = 'rgba(0,0,0,0.6)';
+    context.fillRect(0, 0, WIDTH, HEIGHT);
+    
+    // рисование кругов
+    context.fillStyle = 'rgba(128,128,128,0.3)';
+    for(var i = 0; i < star.length; i++){
+        context.beginPath();
+        
+        context.arc(
+            star[i].x,
+            star[i].y,
+            star[i].r,
+            0,
+            Math.PI * 2
+        );
+      
+        context.closePath();
+        context.fill();
+    }
+    context.fillStyle = "#8AF";
+    context.fillText(star.length, 20, 15);
+    context.fillStyle = 'rgba(255,128,0,0.7)';
+    context.beginPath();
+    context.arc(
+      WIDTH/2,
+      HEIGHT/2,
+      3+Math.random()*1, 
+      0, 
+      Math.PI * 2
+    );
+    context.closePath();
+    context.fill();
+}
+
 window.addEventListener( 'resize', function(){
 	
-	w = c.width = window.innerWidth;
-	h = c.height = window.innerHeight;
+	canvas.height = HEIGHT = window.innerHeight;
+	canvas.width = WIDTH = window.innerWidth;
 	
-	minSquareDist = w * 16;
 })
-	
