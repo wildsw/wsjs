@@ -13,12 +13,12 @@ function onmouseup(/*MouseEvent*/ e){
 }
 
 var star = new Array(); // в этом массиве будут храниться все объекты
-var count = 32; // количество астероидов
+var count = 512; // количество астероидов
 var HEIGHT = window.innerHeight, WIDTH = window.innerWidth;
 var timer;
 
-var sunMass = 131072;
-var maxVz = 1;
+var sunMass = 1310720;
+var maxVz = 128;
 
 var G = 0.066; // GRAVITY
 var dt = 0.03; // stepTime
@@ -51,9 +51,9 @@ function Star(){
     this.y = 0;
     this.vx = 0;
     this.vy = 0;
-    this.m = Math.random() * 256;
-    this.r = this.m / 96; // Radius
-    if (this.r < 0.5) {this.r = 0.5};
+    this.m = Math.random() * 64;
+    this.r = this.m / 32; // Radius
+    if (this.r < 1) this.r = 1;
 }
 
 function Step(){
@@ -67,7 +67,7 @@ function Step(){
             dy = star[j].y - star[i].y;
             
             r = dx * dx + dy * dy;// R^2
-            if(r < 0.01) r = 0.01; // donotnul
+            if(r < 0.1) r = 0.1; // donotnul
             if(r > maxVz) continue;
           
             a = G * star[j].m / r;
@@ -111,7 +111,7 @@ function Step(){
         if( changeX ){
 		      star[i].x = WIDTH/2 + Math.random() * 8;
           star[i].y = HEIGHT/2 + 64 + Math.random() * 8;
-          star[i].vx = 15 + Math.random() * 2;
+          star[i].vx = 32 + Math.random() * 2;
           star[i].vy = 0;
         };
       
@@ -122,9 +122,9 @@ function Step(){
 	      else changeY = false;
 	
 	      if( changeY ){
-		      star[i].x = WIDTH/2 + Math.random() * 16;
-          star[i].y = HEIGHT/2 + 128 + Math.random() * 16;
-          star[i].vx = 6 + Math.random() * 2;
+		      star[i].x = WIDTH/2 + Math.random() * 8;
+          star[i].y = HEIGHT/2 + 128 + Math.random() * 8;
+          star[i].vx = -22 + Math.random() * 2;
           star[i].vy = 0;
         };
     }
@@ -139,14 +139,14 @@ function Draw(){
     context.fillRect(0, 0, WIDTH, HEIGHT);
     
     // рисование кругов
-    context.fillStyle = 'rgba(128,128,128,0.3)';
+    context.fillStyle = 'rgba(255,250,170,0.5)';
     for(var i = 0; i < star.length; i++){
         context.beginPath();
         
         context.arc(
             star[i].x,
-            star[i].y,
-            star[i].r,
+            star[i].y/2+HEIGHT/4,
+            star[i].r + (star[i].y/100),
             0,
             Math.PI * 2
         );
@@ -155,13 +155,24 @@ function Draw(){
         context.fill();
     }
     context.fillStyle = "#8AF";
-    context.fillText(star.length, 20, 15);
-    context.fillStyle = 'rgba(255,128,0,0.7)';
+    context.fillText(star.length, 15, 15);
+    context.fillStyle = 'rgba(255,128,0,0.8)';
     context.beginPath();
     context.arc(
       WIDTH/2,
       HEIGHT/2,
-      3+Math.random()*1, 
+      7+Math.random()*1, 
+      0, 
+      Math.PI * 2
+    );
+    context.closePath();
+    context.fill();
+    context.fillStyle = 'rgba(255,255,128,0.5)';
+    context.beginPath();
+    context.arc(
+      WIDTH/2 + Math.random()*1 - Math.random()*1,
+      HEIGHT/2 + Math.random()*1 - Math.random()*1,
+      5 + Math.random()*1, 
       0, 
       Math.PI * 2
     );
