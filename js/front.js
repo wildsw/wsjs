@@ -40,8 +40,8 @@ function main(){
         aStar = new Star();
         aStar.x = WIDTH * Math.random();
         aStar.y = HEIGHT * Math.random();
-        aStar.vx = 0;
-        aStar.vy = 0;
+        aStar.vx = (Math.random() * 2) * 160;
+        aStar.vy = (Math.random() * 2) * 160;
         star.push(aStar);
     }
     // TIMER
@@ -146,12 +146,12 @@ function Draw(){
     
     for(var i = 0; i < star.length; i++){
       //context.drawImage(astr, star[i].x-4, star[i].y/2+HEIGHT/4-4,8,8);
-      context.fillStyle = 'rgba(188,188,148,1 )';
+      context.fillStyle = 'rgba(188,188,148,0.4 )';
       context.beginPath();
         
         context.arc(
             star[i].x,
-            star[i].y/2+HEIGHT/4,
+            star[i].y/2+HEIGHT/4,
             star[i].r + star[i].y/240,
             0,
             Math.PI * 2
