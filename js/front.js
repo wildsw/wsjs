@@ -13,7 +13,7 @@ function onmouseup(/*MouseEvent*/ e){
 }
 
 var star = new Array(); // в этом массиве будут храниться все объекты
-var count = 64; // количество астероидов
+var count = 640; // количество астероидов
 var HEIGHT = window.innerHeight, WIDTH = window.innerWidth;
 var timer;
 
