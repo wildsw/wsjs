@@ -13,14 +13,14 @@ function onmouseup(/*MouseEvent*/ e){
 }
 
 var star = new Array(); // в этом массиве будут храниться все объекты
-var count = 640; // количество астероидов
+var count = 620; // количество астероидов
 var HEIGHT = window.innerHeight, WIDTH = window.innerWidth;
 var timer;
 
-var sunMass = 1310720;
-var maxVz = 66.66;
+var sunMass = 1210720;
+var maxVz = 666.66;
 
-var G = 0.066; // GRAVITY
+var G = 0.0066; // GRAVITY
 var dt = 0.01; // stepTime
 
 function main(){
@@ -38,10 +38,10 @@ function main(){
     var aStar;
     for(var i = 0; i < count; i++){
         aStar = new Star();
-        aStar.x = WIDTH * Math.random();
-        aStar.y = HEIGHT * Math.random();
-        aStar.vx = (Math.random() * 2) * 160;
-        aStar.vy = (Math.random() * 2) * 160;
+        aStar.x = (WIDTH * Math.random()) / 30 + WIDTH / 2.1;
+        aStar.y = (HEIGHT * Math.random()) / 30 + HEIGHT / 1.7;
+        aStar.vx = Math.random() * 10 + 10;
+        aStar.vy = Math.random() * 6 - Math.random() * 10;
         star.push(aStar);
     }
     // TIMER
@@ -90,7 +90,7 @@ function Step(){
       dxs = WIDTH/2 - star[i].x;
       dys = HEIGHT/2 - star[i].y;
       rs = dxs * dxs + dys * dys;
-      if(rs < 1) rs = 1;
+      if(rs < 0.1) rs = 0.1;
       //if(rs < 10) star[i].x = -10;
       as = G * sunMass / rs;
       rs = Math.sqrt(rs); // тут R
@@ -114,7 +114,7 @@ function Step(){
         if( changeX ){
 		      star[i].x = WIDTH/2;// + Math.random() * 8;
           star[i].y = HEIGHT/2 - 128;// + Math.random() * 8;
-          star[i].vx = -26 + Math.random();
+          star[i].vx = -8 + Math.random();
           star[i].vy = 0;
           changeX = false;
         };
@@ -128,7 +128,7 @@ function Step(){
 	      if( changeY ){
 		      star[i].x = WIDTH/2;// + Math.random() * 8;
           star[i].y = HEIGHT/2 + 128;// + Math.random() * 8;
-          star[i].vx = 26 + Math.random();
+          star[i].vx = 7 + Math.random();
           star[i].vy = 0;
         };
     }
@@ -146,13 +146,13 @@ function Draw(){
     
     for(var i = 0; i < star.length; i++){
       //context.drawImage(astr, star[i].x-4, star[i].y/2+HEIGHT/4-4,8,8);
-      context.fillStyle = 'rgba(188,188,148,0.4 )';
+      context.fillStyle = 'rgba(188,188,148,0.2 )';
       context.beginPath();
         
         context.arc(
             star[i].x,
             star[i].y/2+HEIGHT/4,
-            star[i].r + star[i].y/240,
+            star[i].r + star[i].y/140,
             0,
             Math.PI * 2
         );
