@@ -13,11 +13,11 @@ function onmouseup(/*MouseEvent*/ e){
 }
 
 var star = new Array(); // в этом массиве будут храниться все объекты
-var count = 620; // количество астероидов
+var count = 256; // количество астероидов
 var HEIGHT = window.innerHeight, WIDTH = window.innerWidth;
 var timer;
 
-var sunMass = 1210720;
+var sunMass = 1410720;
 var maxVz = 666.66;
 
 var G = 0.0066; // GRAVITY
@@ -39,9 +39,9 @@ function main(){
     for(var i = 0; i < count; i++){
         aStar = new Star();
         aStar.x = (WIDTH * Math.random()) / 30 + WIDTH / 2.1;
-        aStar.y = (HEIGHT * Math.random()) / 30 + HEIGHT / 1.7;
-        aStar.vx = Math.random() * 10 + 10;
-        aStar.vy = Math.random() * 6 - Math.random() * 10;
+        aStar.y = (HEIGHT * Math.random()) / 30 + HEIGHT / 1.55;
+        aStar.vx = Math.random() * 14 + 1;
+        aStar.vy = Math.random() * 4 - Math.random() * 4;
         star.push(aStar);
     }
     // TIMER
