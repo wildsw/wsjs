@@ -13,14 +13,14 @@ function onmouseup(/*MouseEvent*/ e){
 }
 
 var star = new Array(); // в этом массиве будут храниться все объекты
-var count = 256; // количество астероидов
+var count = 320; // количество астероидов
 var HEIGHT = window.innerHeight, WIDTH = window.innerWidth;
 var timer;
 
-var sunMass = 1410720;
-var maxVz = 666.66;
+var sunMass = 3410720;
+var maxVz = 6.66;
 
-var G = 0.0066; // GRAVITY
+var G = 0.066; // GRAVITY
 var dt = 0.01; // stepTime
 
 function main(){
@@ -39,9 +39,9 @@ function main(){
     for(var i = 0; i < count; i++){
         aStar = new Star();
         aStar.x = (WIDTH * Math.random()) / 30 + WIDTH / 2.1;
-        aStar.y = (HEIGHT * Math.random()) / 30 + HEIGHT / 1.55;
-        aStar.vx = Math.random() * 14 + 1;
-        aStar.vy = Math.random() * 4 - Math.random() * 4;
+        aStar.y = (HEIGHT * Math.random()) / 30 + HEIGHT / 1.77;
+        aStar.vx = Math.random() * 14 + 30;
+        aStar.vy = Math.random() * 8 - Math.random() * 8;
         star.push(aStar);
     }
     // TIMER
@@ -54,7 +54,7 @@ function Star(){
     this.vx = 0;
     this.vy = 0;
     this.m = (Math.random() * 2) * 160;
-    this.r = this.m / 640; // Radius
+    this.r = this.m / 340; // Radius
     if (this.r < 1) this.r = 1;
 }
 
@@ -90,7 +90,7 @@ function Step(){
       dxs = WIDTH/2 - star[i].x;
       dys = HEIGHT/2 - star[i].y;
       rs = dxs * dxs + dys * dys;
-      if(rs < 0.1) rs = 0.1;
+      if(rs < 0.001) rs = 0.001;
       //if(rs < 10) star[i].x = -10;
       as = G * sunMass / rs;
       rs = Math.sqrt(rs); // тут R
@@ -114,7 +114,7 @@ function Step(){
         if( changeX ){
 		      star[i].x = WIDTH/2;// + Math.random() * 8;
           star[i].y = HEIGHT/2 - 128;// + Math.random() * 8;
-          star[i].vx = -8 + Math.random();
+          star[i].vx = -35 + Math.random() * 5;
           star[i].vy = 0;
           changeX = false;
         };
@@ -128,7 +128,7 @@ function Step(){
 	      if( changeY ){
 		      star[i].x = WIDTH/2;// + Math.random() * 8;
           star[i].y = HEIGHT/2 + 128;// + Math.random() * 8;
-          star[i].vx = 7 + Math.random();
+          star[i].vx = 35 + Math.random() * 5;
           star[i].vy = 0;
         };
     }
